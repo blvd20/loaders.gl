@@ -25,7 +25,7 @@ export type GeoJSONLoaderOptions = JSONLoaderOptions & {
 /**
  * GeoJSON loader
  */
-export const GeoJSONWorkerLoader: Loader<GeoJSON, TableBatch, GeoJSONLoaderOptions> = {
+export const GeoJSONWorkerLoader = {
   name: 'GeoJSON',
   id: 'geojson',
   module: 'geojson',
@@ -47,16 +47,16 @@ export const GeoJSONWorkerLoader: Loader<GeoJSON, TableBatch, GeoJSONLoaderOptio
       format: 'geojson'
     }
   }
-};
+} as const satisfies Loader<GeoJSON, TableBatch, GeoJSONLoaderOptions>;
 
-export const GeoJSONLoader: LoaderWithParser<GeoJSON, TableBatch, GeoJSONLoaderOptions> = {
+export const GeoJSONLoader = {
   ...GeoJSONWorkerLoader,
   // @ts-expect-error
   parse,
   // @ts-expect-error
   parseTextSync,
   parseInBatches
-};
+} as const satisfies LoaderWithParser<GeoJSON, TableBatch, GeoJSONLoaderOptions>
 
 async function parse(arrayBuffer: ArrayBuffer, options?: GeoJSONLoaderOptions) {
   return parseTextSync(new TextDecoder().decode(arrayBuffer), options);

@@ -20,7 +20,7 @@ export type DracoLoaderOptions = LoaderOptions & {
 /**
  * Worker loader for Draco3D compressed geometries
  */
-export const DracoLoader: Loader<DracoMesh, never, DracoLoaderOptions> = {
+export const DracoLoader = {
   name: 'Draco',
   id: 'draco',
   module: 'draco',
@@ -39,4 +39,4 @@ export const DracoLoader: Loader<DracoMesh, never, DracoLoaderOptions> = {
       attributeNameEntry: undefined
     }
   }
-};
+} as const satisfies Loader<DracoMesh, never, DracoLoaderOptions>;

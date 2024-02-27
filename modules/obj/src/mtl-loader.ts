@@ -16,7 +16,7 @@ export type MTLLoaderOptions = LoaderOptions & {
  * Loader for the MTL material format
  * Parses a Wavefront .mtl file specifying materials
  */
-export const MTLLoader: Loader<MTLMaterial[], never, LoaderOptions> = {
+export const MTLLoader = {
   name: 'MTL',
   id: 'mtl',
   module: 'mtl',
@@ -28,4 +28,4 @@ export const MTLLoader: Loader<MTLMaterial[], never, LoaderOptions> = {
   options: {
     mtl: {}
   }
-};
+} as const satisfies Loader<MTLMaterial[], never, LoaderOptions>;

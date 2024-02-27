@@ -46,11 +46,7 @@ export type ParquetLoaderOptions = LoaderOptions & {
 /**
  * ParquetJS table loader
  */
-export const ParquetWorkerLoader: Loader<
-  ObjectRowTable,
-  ObjectRowTableBatch,
-  ParquetLoaderOptions
-> = {
+export const ParquetWorkerLoader = {
   name: 'Apache Parquet',
   id: 'parquet',
   module: 'parquet',
@@ -70,69 +66,70 @@ export const ParquetWorkerLoader: Loader<
       preserveBinary: false
     }
   }
-};
+} as const satisfies Loader<ObjectRowTable, ObjectRowTableBatch, ParquetLoaderOptions>;
 
 /** ParquetJS table loader */
-export const ParquetLoader: LoaderWithParser<
-  ObjectRowTable | GeoJSONTable,
-  ObjectRowTableBatch | GeoJSONTableBatch,
-  ParquetLoaderOptions
-> = {
+export const ParquetLoader = {
   ...ParquetWorkerLoader,
   parse: (arrayBuffer: ArrayBuffer, options?: ParquetLoaderOptions) =>
     parseParquetFile(new BlobFile(arrayBuffer), options),
 
   parseFile: parseParquetFile,
   parseFileInBatches: parseParquetFileInBatches
-};
+} as const satisfies LoaderWithParser<
+  ObjectRowTable | GeoJSONTable,
+  ObjectRowTableBatch | GeoJSONTableBatch,
+  ParquetLoaderOptions
+>;
 
 // Defeat tree shaking
 // @ts-ignore
 ParquetLoader.Buffer = Buffer;
 
-export const GeoParquetWorkerLoader: Loader<GeoJSONTable, GeoJSONTableBatch, ParquetLoaderOptions> =
-  {
-    name: 'Apache Parquet',
-    id: 'parquet',
-    module: 'parquet',
-    version: VERSION,
-    worker: true,
-    category: 'table',
-    extensions: ['parquet'],
-    mimeTypes: ['application/octet-stream'],
-    binary: true,
-    tests: ['PAR1', 'PARE'],
-    options: {
-      parquet: {
-        shape: 'geojson-table',
-        columnList: [],
-        geoparquet: true,
-        url: undefined,
-        preserveBinary: false
-      }
+export const GeoParquetWorkerLoader = {
+  name: 'Apache Parquet',
+  id: 'parquet',
+  module: 'parquet',
+  version: VERSION,
+  worker: true,
+  category: 'table',
+  extensions: ['parquet'],
+  mimeTypes: ['application/octet-stream'],
+  binary: true,
+  tests: ['PAR1', 'PARE'],
+  options: {
+    parquet: {
+      shape: 'geojson-table',
+      columnList: [],
+      geoparquet: true,
+      url: undefined,
+      preserveBinary: false
     }
-  };
+  }
+} as const satisfies Loader<GeoJSONTable, GeoJSONTableBatch, ParquetLoaderOptions>;
 
 /** ParquetJS table loader */
-export const GeoParquetLoader: LoaderWithParser<
-  ObjectRowTable | GeoJSONTable,
-  ObjectRowTableBatch | GeoJSONTableBatch,
-  ParquetLoaderOptions
-> = {
+export const GeoParquetLoader = {
+  dataType: null as any as ObjectRowTable | GeoJSONTable,
+  batchType: null as any as ObjectRowTableBatch | GeoJSONTableBatch,
+
   ...GeoParquetWorkerLoader,
   parse(arrayBuffer: ArrayBuffer, options?: ParquetLoaderOptions) {
     return parseGeoParquetFile(new BlobFile(arrayBuffer), options);
   },
   parseFile: parseGeoParquetFile,
   parseFileInBatches: parseGeoParquetFileInBatches
-};
+} as const satisfies LoaderWithParser<
+  ObjectRowTable | GeoJSONTable,
+  ObjectRowTableBatch | GeoJSONTableBatch,
+  ParquetLoaderOptions
+>;
 
 /** @deprecated Test to see if we can improve perf of parquetjs loader */
-export const ParquetColumnarWorkerLoader: Loader<
-  ColumnarTable,
-  ColumnarTableBatch,
-  ParquetLoaderOptions
-> = {
+export const ParquetColumnarWorkerLoader = {
+  dataType: null as any as ColumnarTable,
+  batchType: null as any as ColumnarTableBatch,
+
   name: 'Apache Parquet',
   id: 'parquet',
   module: 'parquet',
@@ -144,18 +141,14 @@ export const ParquetColumnarWorkerLoader: Loader<
   binary: true,
   tests: ['PAR1', 'PARE'],
   options: ParquetLoader.options
-};
+} as const satisfies Loader<ColumnarTable, ColumnarTableBatch, ParquetLoaderOptions>;
 
 /** @deprecated Test to see if we can improve perf of parquetjs loader */
-export const ParquetColumnarLoader: LoaderWithParser<
-  ColumnarTable,
-  ColumnarTableBatch,
-  ParquetLoaderOptions
-> = {
+export const ParquetColumnarLoader = {
   ...ParquetColumnarWorkerLoader,
   parse(arrayBuffer: ArrayBuffer, options?: ParquetLoaderOptions) {
     return parseParquetFileInColumns(new BlobFile(arrayBuffer), options);
   },
   parseFile: parseParquetFileInColumns,
   parseFileInBatches: parseParquetFileInColumnarBatches
-};
+} as const satisfies LoaderWithParser<ColumnarTable, ColumnarTableBatch, ParquetLoaderOptions>;

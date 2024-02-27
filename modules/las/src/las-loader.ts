@@ -20,7 +20,7 @@ export type LASLoaderOptions = LoaderOptions & {
  * Loader for the LAS (LASer) point cloud format
  * @note Does not support LAS v1.4
  */
-export const LASLoader: Loader<LASMesh, never, LASLoaderOptions> = {
+export const LASLoader = {
   name: 'LAS',
   id: 'las',
   module: 'las',
@@ -39,4 +39,4 @@ export const LASLoader: Loader<LASMesh, never, LASLoaderOptions> = {
       colorDepth: 8
     }
   }
-};
+} as const satisfies Loader<LASMesh, never, LASLoaderOptions>
