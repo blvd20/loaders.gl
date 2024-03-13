@@ -43,7 +43,7 @@
   "dependencies": {
     "@loaders.gl/loader-utils": "4.2.0-alpha.5",
     "@loaders.gl/schema": "4.2.0-alpha.5",
-    "lerc": "^4.0.1"
+    "lerc": "^4.0.4"
   },
   "gitHead": "c95a4ff72512668a93d9041ce8636bac09333fd5"
 }
